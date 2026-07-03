@@ -770,6 +770,11 @@ function placeB() {
         let targetY = round((mouseY + placeOY - gridOffsetY) / 40) * 40 + gridOffsetY
         let by = targetY - 29
 
+        // Проверка: не размещать блоки ниже пола
+        if (by > GroundLevel + 29) {
+            return
+        }
+
         // Проверяем, есть ли уже объект в этой позиции
         let exists = false
         for (let i = 0; i < blocks.length; i++) {
@@ -782,12 +787,12 @@ function placeB() {
         if (!exists) {
             if (mode == "block") {
                 let newBlock = new block(bx, by)
-                newBlock.xh = bx  // Сохраняем начальную позицию
+                newBlock.xh = bx
                 blocks.push(newBlock)
             }
             if (mode == "spike") {
                 let newSpike = new spike(bx, by)
-                newSpike.x2 = bx  // Сохраняем начальную позицию
+                newSpike.x2 = bx
                 blocks.push(newSpike)
             }
         }
