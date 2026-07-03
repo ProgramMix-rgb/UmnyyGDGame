@@ -425,15 +425,14 @@ function editorUI() {
 // ============================================
 function saveLevel(slot) {
     try {
-        // Собираем данные из blocks в компактный формат
         let data = []
         for (let i = 0; i < blocks.length; i++) {
             let b = blocks[i]
-            // Сохраняем мировые координаты (xh/x2) и y
+            // Сохраняем "чистую" координату y (без +29)
             if (b.id == "blo") {
-                data.push(["blo", b.xh, b.y])
+                data.push(["blo", b.xh, b.y - 29])  // Вычитаем 29
             } else if (b.id == "spi") {
-                data.push(["spi", b.x2, b.y])
+                data.push(["spi", b.x2, b.y - 29])  // Вычитаем 29
             }
         }
         localStorage.setItem("geometry_level_" + slot, JSON.stringify(data))
