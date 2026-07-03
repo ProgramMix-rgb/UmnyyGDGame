@@ -760,68 +760,6 @@ function draw() {
             }
             pop()
         }
-
-                // ====== Обработка кнопок сохранения ======
-        let saveY = height - 70
-        let saveBtnW = 70
-        let saveBtnH = 30
-        let saveX = 10
-
-        // Клик по слотам 1, 2, 3
-        for (let s = 1; s <= 3; s++) {
-            let sx = saveX + (s - 1) * (saveBtnW + 5)
-            if (mouseX > sx && mouseX < sx + saveBtnW && mouseY > saveY && mouseY < saveY + saveBtnH) {
-                currentSlot = s
-                return
-            }
-        }
-
-        // Кнопка "Сохранить"
-        let actX = saveX + 3 * (saveBtnW + 5) + 10
-        let actW = 110
-        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
-            saveLevel(currentSlot)
-            return
-        }
-
-        // Кнопка "Загрузить"
-        actX += actW + 5
-        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
-            loadLevel(currentSlot)
-            return
-        }
-
-        // Кнопка "Очистить слот"
-        actX += actW + 5
-        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
-            try {
-                localStorage.removeItem("geometry_level_" + currentSlot)
-                showMessage("✓ Слот " + currentSlot + " очищен")
-            } catch (e) {
-                showMessage("✗ Ошибка: " + e.message)
-            }
-            return
-        }
-
-         // Выбор слота цифрами 4, 5, 6
-        if (key == '4') currentSlot = 1
-        if (key == '5') currentSlot = 2
-        if (key == '6') currentSlot = 3
-
-        // Ctrl+S — быстрое сохранение
-        if (key == 's' || key == 'ы') {
-            if (keyIsDown(CONTROL)) {
-                saveLevel(currentSlot)
-                return false
-            }
-        }
-        // Ctrl+L — быстрая загрузка
-        if (key == 'l' || key == 'д') {
-            if (keyIsDown(CONTROL)) {
-                loadLevel(currentSlot)
-                return false
-            }
-        }
     }
 }
 // ============================================
@@ -960,6 +898,48 @@ function mousePressed() {
 
         // Размещение объектов
         placeB()
+
+        // ====== Обработка кликов по кнопкам сохранения ======
+        let saveY = height - 70
+        let saveBtnW = 70
+        let saveBtnH = 30
+        let saveX = 10
+
+        // Клик по слотам 1, 2, 3
+        for (let s = 1; s <= 3; s++) {
+            let sx = saveX + (s - 1) * (saveBtnW + 5)
+            if (mouseX > sx && mouseX < sx + saveBtnW && mouseY > saveY && mouseY < saveY + saveBtnH) {
+                currentSlot = s
+                return
+            }
+        }
+
+        // Кнопка "Сохранить"
+        let actX = saveX + 3 * (saveBtnW + 5) + 10
+        let actW = 110
+        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
+            saveLevel(currentSlot)
+            return
+        }
+
+        // Кнопка "Загрузить"
+        actX += actW + 5
+        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
+            loadLevel(currentSlot)
+            return
+        }
+
+        // Кнопка "Очистить слот"
+        actX += actW + 5
+        if (mouseX > actX && mouseX < actX + actW && mouseY > saveY && mouseY < saveY + saveBtnH) {
+            try {
+                localStorage.removeItem("geometry_level_" + currentSlot)
+                showMessage("✓ Слот " + currentSlot + " очищен")
+            } catch (e) {
+                showMessage("✗ Ошибка: " + e.message)
+            }
+            return
+        }
     }
 }
 
@@ -1053,6 +1033,30 @@ function keyPressed() {
         if (keyCode == RIGHT_ARROW) placeO += 40
         if (keyCode == UP_ARROW) placeOY -= 40
         if (keyCode == DOWN_ARROW) placeOY += 40
+        
+        // WASD для перемещения
+        if (key == 'w' || key == 'ц' || key == 'W' || key == 'Ц') placeOY -= 40
+        if (key == 'a' || key == 'ф' || key == 'A' || key == 'Ф') placeO -= 40
+        if ((key == 's' || key == 'ы' || key == 'S' || key == 'Ы') && !keyIsDown(CONTROL)) placeOY += 40
+        if (key == 'd' || key == 'в' || key == 'D' || key == 'В') placeO += 40
+    }
+
+    if (home == 1) {
+        // Выбор слота цифрами 4, 5, 6
+        if (key == '4') currentSlot = 1
+        if (key == '5') currentSlot = 2
+        if (key == '6') currentSlot = 3
+
+        // Ctrl+S — быстрое сохранение
+        if ((key == 's' || key == 'ы') && keyIsDown(CONTROL)) {
+            saveLevel(currentSlot)
+            return false
+        }
+        // Ctrl+L — быстрая загрузка
+        if ((key == 'l' || key == 'д') && keyIsDown(CONTROL)) {
+            loadLevel(currentSlot)
+            return false
+        }
     }
 }
 
